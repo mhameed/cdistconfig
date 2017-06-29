@@ -1,0 +1,7 @@
+# cdist personal config
+
+
+Clone this repo into ~/.cdist, go to vr/cdist/ and run ./bin/cdist config localhost
+
+
+Tested against v4.4.4.
