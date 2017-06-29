@@ -1,19 +1,6 @@
 # export CDIST_ORDER_DEPENDENCY=on
 hostname=$(cat "$__global/explorer/hostname")
 
-__file /etc/cdist-configured
-case "$hostname" in
-    ccpc-mh-02)
-    __line etc-resolv-remove-search --file /etc/resolv.conf --regex '^search'  --state absent
-    require="__line/etc-resolv-remove-search" __line etc-resolv-add-search --file /etc/resolv.conf --line 'search bath.ac.uk test.bath.ac.uk campus.bath.ac.uk mesarhameed.info'
-    ;;
-esac
-
-__package git --state present
-
-for f in tracker-extract.desktop tracker-miner-apps.desktop tracker-miner-fs.desktop tracker-miner-user-guides.desktop tracker-store.desktop; do
-    fn=/etc/xdg/autostart/$f
-    __line ${fn}-remove --file $fn --regex 'X-GNOME-Autostart-enabled=true'  --state absent
-    require="__line/${fn}-remove" __line ${fn}-add --file $fn --line 'X-GNOME-Autostart-enabled=false'
+find $__manifest/common/  $__manifest/${hostname}/  -type f -iname "*.sh" | while read manifest; do
+    . "$manifest"
 done
-
