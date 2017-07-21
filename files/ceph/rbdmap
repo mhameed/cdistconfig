@@ -1,0 +1,4 @@
+# RbdDevice		Parameters
+#poolname/imagename	id=client,keyring=/etc/ceph/ceph.client.keyring
+d-cc-cs3mmh-01/backups   id=d-cc-cs3mmh-01,keyring=/etc/ceph/ceph.keyring
+d-cc-cs3mmh-01/annex   id=d-cc-cs3mmh-01,keyring=/etc/ceph/ceph.keyring
