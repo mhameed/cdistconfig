@@ -2,5 +2,5 @@
 hostname=$(cat "$__global/explorer/hostname")
 
 find $__manifest/common/  $__manifest/${hostname}/  -type f -iname "*.sh" | while read manifest; do
-    . "$manifest"
+    . "$manifest" </dev/null
 done
