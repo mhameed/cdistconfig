@@ -1,6 +1,6 @@
 #!/bin/sh -e
-exec >&2
-set -x
+#exec >&2
+#set -x
 
 source="$(cat "$__object/parameter/source")"
 tempfile="$__object/files/decoded"
