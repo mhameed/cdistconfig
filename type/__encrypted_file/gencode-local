@@ -1,0 +1,33 @@
+#!/bin/sh -e
+source="$(cat "$__object/parameter/source")"
+if [ -f "$__object/parameter/use_gpg_agent" ]; then
+    use_gpg_agent="$(cat "$__object/parameter/use_gpg_agent")"
+else
+    use_gpg_agent="$(cat "$__type/parameter/default/use_gpg_agent")"
+fi
+
+tempfile="$__object/files/decoded"
+
+
+cksum="$(cat "$__object/parameter/cksum")"
+remote_cksum="$(cat "$__object/explorer/cksum")"
+
+if [ "$cksum" = "$remote_cksum" ]; then
+    exit 0
+fi
+
+mkdir -p "$__object/files"
+if [ "$use_gpg_agent" != "y" ]; then
+    printf "password for ${source}: " >&2
+    stty -echo
+    read mypass </dev/tty
+    stty echo
+    printf "\n" >&2
+    # FIXME:
+    # The command below works only when the file is symmetrically encrypted
+    # If it is encrypted to a public key, the decryption will fail.
+    # Need to find a command that will work for decrypting both symmetric as well as public key files.
+    echo $mypass | gpg --batch --passphrase-fd 0 --no-tty -d "$source" > "$tempfile"
+else
+    gpg  -d "$source" > "$tempfile"
+fi

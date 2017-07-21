@@ -1,0 +1,25 @@
+#!/bin/sh -e
+exec >&2
+set -x
+
+source="$(cat "$__object/parameter/source")"
+tempfile="$__object/files/decoded"
+cksum="$(cat "$__object/parameter/cksum")"
+remote_cksum="$(cat "$__object/explorer/cksum")"
+
+if [ "$cksum" = "$remote_cksum" ]; then
+    exit 0
+fi
+
+set --
+for p in state group mode owner ; do
+        if [ -f "${__object}/parameter/${p}" ] ; then
+                value="$(cat "${__object}/parameter/${p}")"
+                set -- "$@" "--${p}" "${value}"
+                unset value
+        fi
+done
+
+
+require="$__object_name" \
+__file "$__object_id" "$@" --source $tempfile
