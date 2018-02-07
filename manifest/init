@@ -1,6 +1,7 @@
 # export CDIST_ORDER_DEPENDENCY=on
 hostname=$(cat "$__global/explorer/hostname")
-
-find $__manifest/${hostname}/  -type f -iname "*.sh" | while read manifest; do
-    . "$manifest" </dev/null
-done
+if [ -d "$__manifest/${hostname}/" ]; then
+    find "$__manifest/${hostname}/"  -type f -iname "*.sh" | while read manifest; do
+        . "$manifest" </dev/null
+    done
+fi
